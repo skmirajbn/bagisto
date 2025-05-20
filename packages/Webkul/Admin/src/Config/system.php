@@ -1188,7 +1188,7 @@ return [
                 'title'         => 'admin::app.configuration.index.customer.address.requirements.email',
                 'type'          => 'boolean',
                 'channel_based' => true,
-                'default'       => 1,
+                'default'       => 0,
             ],
         ],
     ], [
