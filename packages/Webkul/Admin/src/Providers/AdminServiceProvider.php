@@ -52,5 +52,10 @@ class AdminServiceProvider extends ServiceProvider
             dirname(__DIR__).'/Config/system.php',
             'core'
         );
+        
+        $this->mergeConfigFrom(
+            dirname(__DIR__).'/Config/checkout.php',
+            'core'
+        );
     }
 }

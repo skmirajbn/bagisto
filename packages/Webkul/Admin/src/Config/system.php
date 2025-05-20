@@ -1183,6 +1183,12 @@ return [
                 'type'          => 'boolean',
                 'channel_based' => true,
                 'default'       => 1,
+            ], [
+                'name'          => 'email',
+                'title'         => 'admin::app.configuration.index.customer.address.requirements.email',
+                'type'          => 'boolean',
+                'channel_based' => true,
+                'default'       => 1,
             ],
         ],
     ], [

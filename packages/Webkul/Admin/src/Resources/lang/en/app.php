@@ -4129,6 +4129,7 @@ return [
                         'city'       => 'City',
                         'country'    => 'Country',
                         'state'      => 'State',
+                        'email'      => 'Email',
                         'title'      => 'Requirements',
                         'title-info' => 'Requirements are the conditions, features, or specifications necessary for something to be fulfilled, achieved, or met successfully.',
                         'zip'        => 'Zip',

@@ -775,6 +775,16 @@ class Core
     {
         return (bool) $this->getConfigData('customer.address.requirements.postcode');
     }
+    
+    /**
+     * Is email required.
+     *
+     * @return bool
+     */
+    public function isEmailRequired()
+    {
+        return (bool) $this->getConfigData('customer.address.requirements.email');
+    }
 
     /**
      * Week range.
