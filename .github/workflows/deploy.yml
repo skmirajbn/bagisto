@@ -1,0 +1,102 @@
+name: Deploy to cPanel
+
+on:
+  push:
+    branches:
+      - production
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.VPS_DEPLOY_KEY }}
+
+      - name: Test SSH Connection
+        run: |
+          ssh -o StrictHostKeyChecking=no gulsqcfj@gulshangrocery.com whoami
+
+      - name: Deploy main application
+        run: |
+          # Create a list of files to exclude from the rsync
+          cat > exclude-list.txt << EOF
+          .git/
+          .github/
+          node_modules/
+          vendor/
+          public/
+          storage/
+          app/Providers/AppServiceProvider.php
+          EOF
+
+          # Sync application files to bagisto directory (excluding specific files)
+          echo "Syncing application files to server..."
+          rsync -avz --exclude-from=exclude-list.txt \
+            --delete ./ gulsqcfj@gulshangrocery.com:/home/gulsqcfj/bagisto/
+
+      # - name: Deploy public files
+      #   run: |
+      #     # Create a list of files to exclude from the public directory sync
+      #     cat > public-exclude-list.txt << EOF
+      #     index.php
+      #     .htaccess
+      #     EOF
+
+      #     # Sync public files to public_html directory (excluding specific files)
+      #     echo "Syncing public files to public_html directory..."
+      #     rsync -avz --exclude-from=public-exclude-list.txt \
+      #       --delete ./public/ gulsqcfj@gulshangrocery.com:/home/gulsqcfj/public_html/
+
+      - name: Run post-deployment commands
+        run: |
+          echo "Running post-deployment commands..."
+          ssh -o StrictHostKeyChecking=no gulsqcfj@gulshangrocery.com << 'ENDSSH'
+            cd /home/gulsqcfj/bagisto
+            
+            echo "Running deployment commands..."
+            
+            # Install or update composer dependencies
+            # echo "Updating dependencies..."
+            # composer install --no-dev --optimize-autoloader
+            
+            # Clear caches
+            echo "Clearing caches..."
+            php artisan optimize:clear
+            
+            # Run migrations (optional, add --force to run in production)
+            # Uncomment if you want to run migrations automatically
+            echo "Running migrations..."
+            php artisan migrate --force
+            
+            # Update cached views
+            echo "Caching views..."
+            php artisan view:cache
+            
+            # Update route cache
+            echo "Caching routes..."
+            php artisan route:cache
+            
+            # Update config cache
+            echo "Caching config..."
+            php artisan config:cache
+            
+            
+            # Create storage symlink if needed
+            # echo "Checking storage symlink..."
+            # if [ ! -L "/home/gulsqcfj/public_html/storage" ]; then
+            #   echo "Creating storage symlink..."
+            #   ln -sf /home/gulsqcfj/bagisto/storage/app/public /home/gulsqcfj/public_html/storage
+            # fi
+            
+            echo "Deployment complete!"
+          ENDSSH
