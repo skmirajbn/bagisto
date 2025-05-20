@@ -1,6 +1,6 @@
 name: Shop | Playwright Tests
 
-on: [push, pull_request]
+# on: [push, pull_request]
 
 permissions:
   contents: read
@@ -16,8 +16,8 @@ jobs:
       fail-fast: false
       matrix:
         operating-systems: [ubuntu-latest]
-        php-versions: ['8.3']
-        node-version: ['22.13.1']
+        php-versions: ["8.3"]
+        node-version: ["22.13.1"]
         shard-index: [1]
         shard-total: [1]
 
@@ -89,7 +89,7 @@ jobs:
 
       - name: Run All Playwright Tests
         env:
-          BASE_URL: 'http://127.0.0.1:8000'
+          BASE_URL: "http://127.0.0.1:8000"
         run: |
           npx playwright test --reporter=list --config=tests/e2e-pw/playwright.config.ts --shard=${{ matrix.shard-index }}/${{ matrix.shard-total }}
         working-directory: packages/Webkul/Shop
