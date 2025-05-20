@@ -9,7 +9,7 @@ services:
       - .:/var/www/html
       # - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
-    ports: 
+    ports:
       - 8000:80
     networks:
       - bagisto_network
@@ -27,7 +27,7 @@ services:
       MYSQL_USER: ${DB_USERNAME:-bagisto}
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
-      
+
     volumes:
       - bagisto_db_data:/var/lib/mysql
     networks:
@@ -43,6 +43,7 @@ services:
       PMA_PORT: 3306
       PMA_USER: ${DB_USERNAME:-bagisto}
       PMA_PASSWORD: ${DB_PASSWORD:-bagisto}
+      UPLOAD_LIMIT: 64M
     depends_on:
       - mysql
     networks:
