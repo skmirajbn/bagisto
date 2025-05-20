@@ -24,7 +24,7 @@ jobs:
 
       - name: Test SSH Connection
         run: |
-          ssh -o StrictHostKeyChecking=no gulsqcfj@gulshangrocery.com whoami
+          ssh -o StrictHostKeyChecking=no -p 21098 gulsqcfj@gulshangrocery.com whoami
 
       - name: Deploy main application
         run: |
@@ -41,8 +41,8 @@ jobs:
 
           # Sync application files to bagisto directory (excluding specific files)
           echo "Syncing application files to server..."
-          rsync -avz --exclude-from=exclude-list.txt \
-            --delete ./ gulsqcfj@gulshangrocery.com:/home/gulsqcfj/bagisto/
+          rsync -avz -e "ssh -p 21098 -o StrictHostKeyChecking=no" --exclude-from=exclude-list.txt \
+          --delete ./ gulsqcfj@gulshangrocery.com:/home/gulsqcfj/bagisto/
 
       # - name: Deploy public files
       #   run: |
@@ -60,7 +60,7 @@ jobs:
       - name: Run post-deployment commands
         run: |
           echo "Running post-deployment commands..."
-          ssh -o StrictHostKeyChecking=no gulsqcfj@gulshangrocery.com << 'ENDSSH'
+          ssh -o StrictHostKeyChecking=no -p 21098 gulsqcfj@gulshangrocery.com << 'ENDSSH'
             cd /home/gulsqcfj/bagisto
             
             echo "Running deployment commands..."
