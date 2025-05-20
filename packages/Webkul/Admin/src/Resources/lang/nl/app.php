@@ -581,15 +581,20 @@ return [
                 'title' => 'Facturen',
 
                 'datagrid' => [
-                    'action'       => 'Acties',
-                    'grand-total'  => 'Totaalbedrag',
-                    'id'           => 'ID',
-                    'invoice-date' => 'Factuurdatum',
-                    'order-id'     => 'Bestelnummer',
-                    'overdue'      => 'Achterstallig',
-                    'paid'         => 'Betaald',
-                    'pending'      => 'In afwachting',
-                    'status'       => 'Status',
+                    'action'              => 'Acties',
+                    'days-left'           => 'Nog :count dag(en)',
+                    'days-overdue'        => ':count dag(en) te laat',
+                    'grand-total'         => 'Totaalbedrag',
+                    'id'                  => 'ID',
+                    'invoice-date'        => 'Factuurdatum',
+                    'mass-update-success' => 'Geselecteerde facturen zijn succesvol bijgewerkt.',
+                    'order-id'            => 'Bestelnummer',
+                    'overdue'             => 'Achterstallig',
+                    'overdue-by'          => ':count dag(en) te laat',
+                    'paid'                => 'Betaald',
+                    'pending'             => 'In afwachting',
+                    'status'              => 'Status',
+                    'update-status'       => 'Status bijwerken',
                 ],
             ],
 
@@ -1264,7 +1269,6 @@ return [
                             'guest-capacity'            => 'Gastcapaciteit',
                             'guest-limit'               => 'Gastlimiet Per Tafel',
                             'prevent-scheduling-before' => 'Voorkom Planning Voor',
-
                             'slot-duration'             => 'Tijdsduur (Minuten)',
 
                             'charged-per'               => [
@@ -3730,6 +3734,40 @@ return [
                         'redirection-link'  => 'Omleidingslink',
                     ],
 
+                    'speculation-rules' => [
+                        'enable-speculation' => 'Speculatieregels inschakelen',
+                        'info'               => 'Stel instellingen in voor het in- of uitschakelen van geautomatiseerde speculatie-logica.',
+                        'title'              => 'Speculatieregels',
+
+                        'prerender' => [
+                            'conservative'           => 'Conservatief',
+                            'eager'                  => 'Gretig',
+                            'eagerness'              => 'Prerender gretigheidsniveau',
+                            'eagerness-info'         => 'Bepaalt hoe agressief speculatieregels worden toegepast. Opties: gretig (max), gematigd (standaard), conservatief (laag).',
+                            'enabled'                => 'Speculatieregels voor Prerender inschakelen',
+                            'ignore-url-params'      => 'Negeer Prerender URL-parameters',
+                            'ignore-url-params-info' => 'Specificeer URL-parameters die genegeerd moeten worden in speculatieregels. Gebruik een pipe (|) om meerdere parameters te scheiden.',
+                            'ignore-urls'            => 'Negeer Prerender URLs',
+                            'ignore-urls-info'       => 'Voer URLs in die moeten worden uitgesloten van speculatie-logica. Scheid meerdere URLs met een pipe (|).',
+                            'info'                   => 'Stel de status van speculatieregels in.',
+                            'moderate'               => 'Gematigd',
+                        ],
+
+                        'prefetch' => [
+                            'conservative'           => 'Conservatief',
+                            'eager'                  => 'Gretig',
+                            'eagerness'              => 'Prefetch gretigheidsniveau',
+                            'eagerness-info'         => 'Bepaalt hoe agressief speculatieregels worden toegepast. Opties: gretig (max), gematigd (standaard), conservatief (laag).',
+                            'enabled'                => 'Speculatieregels voor Prefetch inschakelen',
+                            'ignore-url-params'      => 'Negeer Prefetch URL-parameters',
+                            'ignore-url-params-info' => 'Specificeer URL-parameters die genegeerd moeten worden in speculatieregels. Gebruik een pipe (|) om meerdere parameters te scheiden.',
+                            'ignore-urls'            => 'Negeer Prefetch URLs',
+                            'ignore-urls-info'       => 'Voer URLs in die moeten worden uitgesloten van speculatie-logica. Scheid meerdere URLs met een pipe (|).',
+                            'info'                   => 'Stel de status van speculatieregels in.',
+                            'moderate'               => 'Gematigd',
+                        ],
+                    ],
+
                     'custom-scripts' => [
                         'custom-css'        => 'Aangepaste CSS',
                         'custom-javascript' => 'Aangepast Javascript',
@@ -3747,6 +3785,15 @@ return [
                         'logo-image' => 'Logo-afbeelding',
                         'title'      => 'Admin-logo',
                         'title-info' => 'Configureer het logo en de favicon-afbeeldingen voor de voorkant van uw website voor een betere branding en herkenning.',
+                    ],
+
+                    'menu-category' => [
+                        'default'         => 'Standaardmenu',
+                        'info'            => 'Deze instelling bepaalt de zichtbaarheid van categorieën in het hoofdmenu. Je kunt ervoor kiezen om alleen hoofdcategorieën of alle geneste categorieën weer te geven.',
+                        'preview-default' => 'Voorbeeld standaardmenu',
+                        'preview-sidebar' => 'Voorbeeld zijbalkmenu',
+                        'sidebar'         => 'Zijbalkmenu',
+                        'title'           => 'Menucategorie weergave',
                     ],
                 ],
 
@@ -4164,13 +4211,103 @@ return [
                     ],
 
                     'social-login' => [
-                        'enable-facebook'   => 'Facebook inschakelen',
-                        'enable-github'     => 'Github inschakelen',
-                        'enable-google'     => 'Google inschakelen',
-                        'enable-linkedin'   => 'LinkedIn inschakelen',
-                        'enable-twitter'    => 'Twitter inschakelen',
-                        'social-login'      => 'Sociaal inloggen',
-                        'social-login-info' => '"Sociaal inloggen" stelt gebruikers in staat om websites te openen met behulp van hun sociale media-accounts, waardoor registratie- en inlogprocessen worden gestroomlijnd voor gemak.',
+                        'title' => 'Sociale Login',
+                        'info'  => '"Sociale login" stelt gebruikers in staat om een website te betreden met hun sociale media-accounts, waardoor registratie en inloggen eenvoudiger worden.',
+
+                        'google' => [
+                            'enable-google' => 'Google inschakelen',
+
+                            'client-id' => [
+                                'title'      => 'Client-ID',
+                                'title-info' => 'Unieke identificatiecode verstrekt door Google bij het aanmaken van jouw OAuth-applicatie.',
+                            ],
+
+                            'client-secret' => [
+                                'title'      => 'Clientgeheim',
+                                'title-info' => 'Geheime sleutel gekoppeld aan je Google OAuth-client. Houd deze vertrouwelijk.',
+                            ],
+
+                            'redirect' => [
+                                'title'      => 'Redirect-URL',
+                                'title-info' => 'Callback-URL waar gebruikers naartoe worden geleid na authenticatie via Google. Moet overeenkomen met de URL in de Google-console.',
+                            ],
+                        ],
+
+                        'facebook' => [
+                            'enable-facebook' => 'Facebook inschakelen',
+
+                            'client-id' => [
+                                'title'      => 'Client-ID',
+                                'title-info' => 'App-ID verstrekt door Facebook bij het aanmaken van een app in de Facebook Developer Console.',
+                            ],
+
+                            'client-secret' => [
+                                'title'      => 'Clientgeheim',
+                                'title-info' => 'Geheime sleutel gekoppeld aan je Facebook-app. Houd deze veilig en privé.',
+                            ],
+
+                            'redirect' => [
+                                'title'      => 'Redirect-URL',
+                                'title-info' => 'Callback-URL waar gebruikers naartoe worden geleid na authenticatie via Facebook. Moet overeenkomen met de URL in de app-instellingen van Facebook.',
+                            ],
+                        ],
+
+                        'github' => [
+                            'enable-github' => 'GitHub inschakelen',
+
+                            'client-id' => [
+                                'title'      => 'Client-ID',
+                                'title-info' => 'Unieke identificatiecode verstrekt door GitHub bij het aanmaken van jouw OAuth-applicatie.',
+                            ],
+
+                            'client-secret' => [
+                                'title'      => 'Clientgeheim',
+                                'title-info' => 'Geheime sleutel gekoppeld aan je GitHub OAuth-client. Houd deze vertrouwelijk.',
+                            ],
+
+                            'redirect' => [
+                                'title'      => 'Redirect-URL',
+                                'title-info' => 'Callback-URL waar gebruikers naartoe worden geleid na authenticatie via GitHub. Moet overeenkomen met de URL in de GitHub-console.',
+                            ],
+                        ],
+
+                        'linkedin' => [
+                            'enable-linkedin' => 'LinkedIn inschakelen',
+
+                            'client-id' => [
+                                'title'      => 'Client-ID',
+                                'title-info' => 'Unieke identificatiecode verstrekt door LinkedIn bij het aanmaken van jouw OAuth-applicatie.',
+                            ],
+
+                            'client-secret' => [
+                                'title'      => 'Clientgeheim',
+                                'title-info' => 'Geheime sleutel gekoppeld aan je LinkedIn OAuth-client. Houd deze vertrouwelijk.',
+                            ],
+
+                            'redirect' => [
+                                'title'      => 'Redirect-URL',
+                                'title-info' => 'Callback-URL waar gebruikers naartoe worden geleid na authenticatie via LinkedIn. Moet overeenkomen met de URL in de LinkedIn-console.',
+                            ],
+                        ],
+
+                        'twitter' => [
+                            'enable-twitter' => 'Twitter inschakelen',
+
+                            'client-id' => [
+                                'title'      => 'Client-ID',
+                                'title-info' => 'Unieke identificatiecode verstrekt door Twitter bij het aanmaken van jouw OAuth-applicatie.',
+                            ],
+
+                            'client-secret' => [
+                                'title'      => 'Clientgeheim',
+                                'title-info' => 'Geheime sleutel gekoppeld aan je Twitter OAuth-client. Houd deze vertrouwelijk.',
+                            ],
+
+                            'redirect' => [
+                                'title'      => 'Redirect-URL',
+                                'title-info' => 'Callback-URL waar gebruikers naartoe worden geleid na authenticatie via Twitter. Moet overeenkomen met de URL in de Twitter-console.',
+                            ],
+                        ],
                     ],
                 ],
             ],

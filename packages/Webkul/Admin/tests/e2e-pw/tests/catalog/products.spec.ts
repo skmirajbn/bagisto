@@ -99,19 +99,6 @@ async function createSimpleProduct(adminPage) {
     await adminPage.locator("#weight").fill(product.weight);
 
     /**
-     * Settings Section.
-     */
-    await adminPage
-        .locator(".mt-3\\.5 > div:nth-child(2) > div:nth-child(3) > div")
-        .first()
-        .click();
-    await adminPage.locator(".relative > label").first().click();
-    await adminPage.locator("div:nth-child(3) > .relative > label").click();
-    await adminPage.locator("div:nth-child(4) > .relative > label").click();
-    await adminPage.locator("div:nth-child(5) > .relative > label").click();
-    await adminPage.locator("div:nth-child(6) > .relative > label").click();
-
-    /**
      * Inventories Section.
      */
     await adminPage.locator('input[name="inventories\\[1\\]"]').click();
@@ -249,24 +236,7 @@ async function createConfigurableProduct(adminPage) {
     // Will add images later.
 
     /**
-     * Settings Section.
-     */
-    await adminPage
-        .locator(".mt-3\\.5 > div:nth-child(2) > div:nth-child(3) > div")
-        .first()
-        .click();
-    await adminPage.locator(".relative > label").first().click();
-    await adminPage.locator("div:nth-child(3) > .relative > label").click();
-    await adminPage.locator("div:nth-child(4) > .relative > label").click();
-    await adminPage.locator("div:nth-child(5) > .relative > label").click();
-    await adminPage.locator("div:nth-child(6) > .relative > label").click();
-
-    /**
-     * Variations Section.
-     */
-
-    /**
-     * Adding new varient.
+     * Adding new variant.
      */
     await adminPage.getByText("Add Variant").click();
     await adminPage.locator('select[name="color"]').selectOption("1");
@@ -422,19 +392,6 @@ async function createGroupedProduct(adminPage) {
     // Will add images later.
 
     /**
-     * Settings Section.
-     */
-    await adminPage
-        .locator(".mt-3\\.5 > div:nth-child(2) > div:nth-child(3) > div")
-        .first()
-        .click();
-    await adminPage.locator(".relative > label").first().click();
-    await adminPage.locator("div:nth-child(3) > .relative > label").click();
-    await adminPage.locator("div:nth-child(4) > .relative > label").click();
-    await adminPage.locator("div:nth-child(5) > .relative > label").click();
-    await adminPage.locator("div:nth-child(6) > .relative > label").click();
-
-    /**
      * Adding products to make a group of products.
      */
     await adminPage.locator(".secondary-button").first().click();
@@ -585,19 +542,6 @@ async function createVirtualProduct(adminPage) {
     await adminPage.locator("#price").fill(product.price);
 
     /**
-     * Settings Section.
-     */
-    await adminPage
-        .locator(".mt-3\\.5 > div:nth-child(2) > div:nth-child(3) > div")
-        .first()
-        .click();
-    await adminPage.locator(".relative > label").first().click();
-    await adminPage.locator("div:nth-child(3) > .relative > label").click();
-    await adminPage.locator("div:nth-child(4) > .relative > label").click();
-    await adminPage.locator("div:nth-child(5) > .relative > label").click();
-    await adminPage.locator("div:nth-child(6) > .relative > label").click();
-
-    /**
      * Inventories Section.
      */
     await adminPage.locator('input[name="inventories\\[1\\]"]').click();
@@ -710,19 +654,11 @@ async function createDownloadableProduct(adminPage) {
     await adminPage.locator("#price").fill(product.price);
 
     /**
-     * Settings Section.
-     */
-    await adminPage.locator(".relative > label").first().click();
-    await adminPage.locator("div:nth-child(3) > .relative > label").click();
-    await adminPage.locator("div:nth-child(4) > .relative > label").click();
-    await adminPage.locator("div:nth-child(5) > .relative > label").click();
-
-    /**
      * Downloadable Links Section.
      */
     await adminPage.getByText("Add Link").first().click();
     await adminPage.waitForSelector(".min-h-0 > div > div");
-    await adminPage.locator('input[name="title"]').fill("Link 1");
+    await adminPage.locator('input[name="title"]').first().fill(generateName());
     const linkTitle = await adminPage
         .locator('input[name="title"]')
         .inputValue();
@@ -799,13 +735,16 @@ async function createBookingProduct(adminPage) {
         location: generateLocation(),
     };
 
-    const availableToDate = new Date(product.date);
-    const availableFromDate = new Date(availableToDate.getTime() + 60 * 60000);
+    const availableFromDate = new Date(); // Now
+    const availableToDate = new Date(availableFromDate.getTime() + 60 * 60000);
     const formattedAvailableFromDate = availableFromDate
         .toISOString()
         .slice(0, 19)
         .replace("T", " ");
-
+    const formattedAvailableToDate = availableToDate
+        .toISOString()
+        .slice(0, 19)
+        .replace("T", " ");
     /**
      * Reaching to the create product page.
      */
@@ -871,14 +810,6 @@ async function createBookingProduct(adminPage) {
     await adminPage.locator("#price").fill(product.price);
 
     /**
-     * Settings Section.
-     */
-    await adminPage.locator(".relative > label").first().click();
-    await adminPage.locator("div:nth-child(3) > .relative > label").click();
-    await adminPage.locator("div:nth-child(4) > .relative > label").click();
-    await adminPage.locator("div:nth-child(5) > .relative > label").click();
-
-    /**
      * Default Booking Section.
      */
     //await adminPage.locator('select[name="booking[type]"]').selectOption("Default Booking");
@@ -896,7 +827,7 @@ async function createBookingProduct(adminPage) {
         .fill(formattedAvailableFromDate);
     await adminPage
         .locator('input[name="booking[available_to]"]')
-        .fill(product.date);
+        .fill(formattedAvailableToDate);
 
     return product;
 }
@@ -1043,7 +974,7 @@ test.describe("configurable product management", () => {
          */
         await adminPage
             .locator(
-                "div:nth-child(7) > div:nth-child(3) > div:nth-child(2) > a:nth-child(2)"
+                "div:nth-child(7) > div:nth-child(3) > p > span:nth-child(2)"
             )
             .click();
 
@@ -1627,7 +1558,7 @@ test.describe("booking product management", () => {
                 await adminPage
                     .getByRole("spinbutton", { name: "Minute" })
                     .click();
-                await adminPage.waitForTimeout(500); // Adding a delay of 0.5 second
+                await adminPage.waitForTimeout(500); 
 
                 await adminPage
                     .getByRole("button", { name: "Save", exact: true })
@@ -1723,6 +1654,7 @@ test.describe("booking product management", () => {
                 await adminPage
                     .getByRole("spinbutton", { name: "Minute" })
                     .fill("35");
+                    await adminPage.getByRole("spinbutton", { name: "Minute" }).press("Enter");
 
                 /**
                  * Available To.
@@ -1748,6 +1680,7 @@ test.describe("booking product management", () => {
                 await adminPage
                     .getByRole("spinbutton", { name: "Minute" })
                     .fill("35");
+                await adminPage.getByRole("spinbutton", { name: "Minute" }).press("Enter");
 
                 /**
                  * Timeout of 0.5sec.
@@ -1863,6 +1796,7 @@ test.describe("booking product management", () => {
             await adminPage
                 .getByRole("spinbutton", { name: "Minute" })
                 .fill("35");
+            await adminPage.getByRole("spinbutton", { name: "Minute" }).press("Enter");    
 
             /**
              * Slot 1 time available to.
@@ -1882,7 +1816,7 @@ test.describe("booking product management", () => {
             await adminPage
                 .getByRole("spinbutton", { name: "Minute" })
                 .fill("55");
-
+            await adminPage.getByRole("spinbutton", { name: "Minute" }).press("Enter");
             /**
              * Adding slot 2 and waiting for time slot to be visible.
              */
@@ -1910,6 +1844,7 @@ test.describe("booking product management", () => {
             await adminPage
                 .getByRole("spinbutton", { name: "Minute" })
                 .fill("10");
+            await adminPage.getByRole("spinbutton", { name: "Minute" }).press("Enter");    
 
             /**
              * Slot 2 time available to.
@@ -1927,7 +1862,8 @@ test.describe("booking product management", () => {
             await adminPage
                 .getByRole("spinbutton", { name: "Minute" })
                 .fill("35");
-
+            await adminPage.getByRole("spinbutton", { name: "Minute" }).press("Enter");
+            
             /**
              * Saving the slots.
              */
@@ -2243,6 +2179,7 @@ test.describe("booking product management", () => {
                     const fromMin = await adminPage
                         .getByRole("spinbutton", { name: "Minute" })
                         .fill("00");
+                    await adminPage.getByRole("spinbutton", { name: "Minute" }).press("Enter");
 
                     /**
                      * Adding slots as per day available to.
@@ -2267,6 +2204,7 @@ test.describe("booking product management", () => {
                     const toMin = await adminPage
                         .getByRole("spinbutton", { name: "Minute" })
                         .fill("55");
+                    await adminPage.getByRole("spinbutton", { name: "Minute" }).press("Enter");
 
                     /**
                      * Clicking on Add Slots.
@@ -2369,6 +2307,7 @@ test.describe("booking product management", () => {
             await adminPage
                 .getByRole("spinbutton", { name: "Minute" })
                 .fill("35");
+            await adminPage.getByRole("spinbutton", { name: "Minute" }).press("Enter");
 
             /**
              * Slot 1 time available to.
@@ -2388,6 +2327,7 @@ test.describe("booking product management", () => {
             await adminPage
                 .getByRole("spinbutton", { name: "Minute" })
                 .fill("55");
+            await adminPage.getByRole("spinbutton", { name: "Minute" }).press("Enter");
 
             /**
              * Adding slot 2 and waiting for time slot to be visible.
@@ -2417,6 +2357,7 @@ test.describe("booking product management", () => {
             await adminPage
                 .getByRole("spinbutton", { name: "Minute" })
                 .fill("10");
+            await adminPage.getByRole("spinbutton", { name: "Minute" }).press("Enter");
 
             /**
              * Slot 2 time available to.
@@ -2434,6 +2375,7 @@ test.describe("booking product management", () => {
             await adminPage
                 .getByRole("spinbutton", { name: "Minute" })
                 .fill("35");
+            await adminPage.getByRole("spinbutton", { name: "Minute" }).press("Enter");
 
             /**
              * Saving the slots.
@@ -2494,17 +2436,27 @@ test.describe("booking product management", () => {
             /**
              * Adding Tickets
              */
-            await adminPage.getByText('Add Tickets').click();
-            await adminPage.getByRole('textbox', { name: 'Name' }).click();
-            await adminPage.getByRole('textbox', { name: 'Name' }).fill(generateName());
-            await adminPage.getByRole('textbox', { name: 'Quantity' }).click();
-            await adminPage.getByRole('textbox', { name: 'Quantity' }).fill('2');
-            await adminPage.getByRole('textbox', { name: 'Price' }).click();
-            await adminPage.getByRole('textbox', { name: 'Price' }).fill('500');
-            await adminPage.getByRole('textbox', { name: 'Description' }).click();
-            await adminPage.getByRole('textbox', { name: 'Description' }).fill(generateDescription());
-            await adminPage.getByRole('button', { name: 'Save', exact: true }).click();
-            
+            await adminPage.getByText("Add Tickets").click();
+            await adminPage.getByRole("textbox", { name: "Name" }).click();
+            await adminPage
+                .getByRole("textbox", { name: "Name" })
+                .fill(generateName());
+            await adminPage.getByRole("textbox", { name: "Quantity" }).click();
+            await adminPage
+                .getByRole("textbox", { name: "Quantity" })
+                .fill("2");
+            await adminPage.getByRole("textbox", { name: "Price" }).click();
+            await adminPage.getByRole("textbox", { name: "Price" }).fill("500");
+            await adminPage
+                .getByRole("textbox", { name: "Description" })
+                .click();
+            await adminPage
+                .getByRole("textbox", { name: "Description" })
+                .fill(generateDescription());
+            await adminPage
+                .getByRole("button", { name: "Save", exact: true })
+                .click();
+
             /**
              * Saving the Booking Product.
              */
@@ -2576,7 +2528,7 @@ test.describe("booking product management", () => {
             await adminPage
                 .getByRole("textbox", { name: "Available To" })
                 .press("Enter");
-            
+
             /**
              * select Daily renting Type.
              */
@@ -2691,20 +2643,34 @@ test.describe("booking product management", () => {
             await adminPage
                 .locator('select[name="booking\\[same_slot_all_days\\]"]')
                 .selectOption("1");
-            
+
             /**
              * Add slots
-             */    
-            await adminPage.getByText('Add Slots').first().click();
-            await adminPage.getByRole('textbox', { name: 'From', exact: true }).click();
-            await adminPage.getByRole('spinbutton', { name: 'Hour' }).fill('14');
-            await adminPage.getByRole('spinbutton', { name: 'Minute' }).click();
-            await adminPage.getByRole('spinbutton', { name: 'Minute' }).fill('20');
-            await adminPage.getByRole('textbox', { name: 'To', exact: true }).click();
-            await adminPage.getByRole('spinbutton', { name: 'Hour' }).fill('18');
-            await adminPage.getByRole('spinbutton', { name: 'Minute' }).click();
-            await adminPage.getByRole('spinbutton', { name: 'Minute' }).fill('35');
-            await adminPage.getByRole('button', { name: 'Save', exact: true }).click();
+             */
+            await adminPage.getByText("Add Slots").first().click();
+            await adminPage
+                .getByRole("textbox", { name: "From", exact: true })
+                .click();
+            await adminPage
+                .getByRole("spinbutton", { name: "Hour" })
+                .fill("14");
+            await adminPage.getByRole("spinbutton", { name: "Minute" }).click();
+            await adminPage
+                .getByRole("spinbutton", { name: "Minute" })
+                .fill("20");
+            await adminPage
+                .getByRole("textbox", { name: "To", exact: true })
+                .click();
+            await adminPage
+                .getByRole("spinbutton", { name: "Hour" })
+                .fill("18");
+            await adminPage.getByRole("spinbutton", { name: "Minute" }).click();
+            await adminPage
+                .getByRole("spinbutton", { name: "Minute" })
+                .fill("35");
+            await adminPage
+                .getByRole("button", { name: "Save", exact: true })
+                .click();
 
             /**
              * Saving the booking product.
@@ -2916,17 +2882,33 @@ test.describe("booking product management", () => {
 
             /**
              * Add slots
-             */    
-            await adminPage.getByText('Add Slots').first().click();
-            await adminPage.getByRole('textbox', { name: 'From', exact: true }).click();
-            await adminPage.getByRole('spinbutton', { name: 'Hour' }).fill('14');
-            await adminPage.getByRole('spinbutton', { name: 'Minute' }).click();
-            await adminPage.getByRole('spinbutton', { name: 'Minute' }).fill('20');
-            await adminPage.getByRole('textbox', { name: 'To', exact: true }).click();
-            await adminPage.getByRole('spinbutton', { name: 'Hour' }).fill('18');
-            await adminPage.getByRole('spinbutton', { name: 'Minute' }).click();
-            await adminPage.getByRole('spinbutton', { name: 'Minute' }).fill('35');
-            await adminPage.getByRole('button', { name: 'Save', exact: true }).click();
+             */
+            await adminPage.getByText("Add Slots").first().click();
+            await adminPage
+                .getByRole("textbox", { name: "From", exact: true })
+                .click();
+            await adminPage
+                .getByRole("spinbutton", { name: "Hour" })
+                .fill("14");
+            await adminPage.getByRole("spinbutton", { name: "Minute" }).click();
+            await adminPage
+                .getByRole("spinbutton", { name: "Minute" })
+                .fill("20");
+            await adminPage.getByRole("spinbutton", { name: "Minute" }).press("Enter");
+            await adminPage
+                .getByRole("textbox", { name: "To", exact: true })
+                .click();
+            await adminPage
+                .getByRole("spinbutton", { name: "Hour" })
+                .fill("18");
+            await adminPage.getByRole("spinbutton", { name: "Minute" }).click();
+            await adminPage
+                .getByRole("spinbutton", { name: "Minute" })
+                .fill("35");
+            await adminPage.getByRole("spinbutton", { name: "Minute" }).press("Enter");
+            await adminPage
+                .getByRole("button", { name: "Save", exact: true })
+                .click();
 
             /**
              * Saving the booking product.
@@ -3161,17 +3143,31 @@ test.describe("booking product management", () => {
 
             /**
              * Add slots
-             */    
-            await adminPage.getByText('Add Slots').first().click();
-            await adminPage.getByRole('textbox', { name: 'From', exact: true }).click();
-            await adminPage.getByRole('spinbutton', { name: 'Hour' }).fill('14');
-            await adminPage.getByRole('spinbutton', { name: 'Minute' }).click();
-            await adminPage.getByRole('spinbutton', { name: 'Minute' }).fill('20');
-            await adminPage.getByRole('textbox', { name: 'To', exact: true }).click();
-            await adminPage.getByRole('spinbutton', { name: 'Hour' }).fill('18');
-            await adminPage.getByRole('spinbutton', { name: 'Minute' }).click();
-            await adminPage.getByRole('spinbutton', { name: 'Minute' }).fill('35');
-            await adminPage.getByRole('button', { name: 'Save', exact: true }).click();
+             */
+            await adminPage.getByText("Add Slots").first().click();
+            await adminPage
+                .getByRole("textbox", { name: "From", exact: true })
+                .click();
+            await adminPage
+                .getByRole("spinbutton", { name: "Hour" })
+                .fill("14");
+            await adminPage.getByRole("spinbutton", { name: "Minute" }).click();
+            await adminPage
+                .getByRole("spinbutton", { name: "Minute" })
+                .fill("20");
+            await adminPage
+                .getByRole("textbox", { name: "To", exact: true })
+                .click();
+            await adminPage
+                .getByRole("spinbutton", { name: "Hour" })
+                .fill("18");
+            await adminPage.getByRole("spinbutton", { name: "Minute" }).click();
+            await adminPage
+                .getByRole("spinbutton", { name: "Minute" })
+                .fill("35");
+            await adminPage
+                .getByRole("button", { name: "Save", exact: true })
+                .click();
             /**
              * Saving the booking product.
              */
@@ -3352,7 +3348,6 @@ test.describe("booking product management", () => {
                 .click();
         });
 
-
         test("should create Table booking product and charge per table with same slot for all days", async ({
             adminPage,
         }) => {
@@ -3404,9 +3399,15 @@ test.describe("booking product management", () => {
             await adminPage
                 .locator('select[name="booking\\[price_type\\]"]')
                 .selectOption("table");
-            await adminPage.getByRole('textbox', { name: 'Guest Limit Per Table' }).fill('4');
-            await adminPage.getByRole('textbox', { name: 'Guest Capacity' }).fill('3');
-            await adminPage.getByRole('textbox', { name: 'Slot Duration (Mins)' }).fill('25');
+            await adminPage
+                .getByRole("textbox", { name: "Guest Limit Per Table" })
+                .fill("4");
+            await adminPage
+                .getByRole("textbox", { name: "Guest Capacity" })
+                .fill("3");
+            await adminPage
+                .getByRole("textbox", { name: "Slot Duration (Mins)" })
+                .fill("25");
             await adminPage
                 .getByRole("textbox", { name: "Break Time b/w Slots (Mins)" })
                 .fill("10");
@@ -3419,17 +3420,31 @@ test.describe("booking product management", () => {
 
             /**
              * Add slots
-             */    
-            await adminPage.getByText('Add Slots').first().click();
-            await adminPage.getByRole('textbox', { name: 'From', exact: true }).click();
-            await adminPage.getByRole('spinbutton', { name: 'Hour' }).fill('14');
-            await adminPage.getByRole('spinbutton', { name: 'Minute' }).click();
-            await adminPage.getByRole('spinbutton', { name: 'Minute' }).fill('20');
-            await adminPage.getByRole('textbox', { name: 'To', exact: true }).click();
-            await adminPage.getByRole('spinbutton', { name: 'Hour' }).fill('18');
-            await adminPage.getByRole('spinbutton', { name: 'Minute' }).click();
-            await adminPage.getByRole('spinbutton', { name: 'Minute' }).fill('35');
-            await adminPage.getByRole('button', { name: 'Save', exact: true }).click();
+             */
+            await adminPage.getByText("Add Slots").first().click();
+            await adminPage
+                .getByRole("textbox", { name: "From", exact: true })
+                .click();
+            await adminPage
+                .getByRole("spinbutton", { name: "Hour" })
+                .fill("14");
+            await adminPage.getByRole("spinbutton", { name: "Minute" }).click();
+            await adminPage
+                .getByRole("spinbutton", { name: "Minute" })
+                .fill("20");
+            await adminPage
+                .getByRole("textbox", { name: "To", exact: true })
+                .click();
+            await adminPage
+                .getByRole("spinbutton", { name: "Hour" })
+                .fill("18");
+            await adminPage.getByRole("spinbutton", { name: "Minute" }).click();
+            await adminPage
+                .getByRole("spinbutton", { name: "Minute" })
+                .fill("35");
+            await adminPage
+                .getByRole("button", { name: "Save", exact: true })
+                .click();
             /**
              * Saving the booking product.
              */
@@ -3489,9 +3504,15 @@ test.describe("booking product management", () => {
             await adminPage
                 .locator('select[name="booking\\[price_type\\]"]')
                 .selectOption("table");
-            await adminPage.getByRole('textbox', { name: 'Guest Limit Per Table' }).fill('4');
-            await adminPage.getByRole('textbox', { name: 'Guest Capacity' }).fill('3');
-            await adminPage.getByRole('textbox', { name: 'Slot Duration (Mins)' }).fill('25');
+            await adminPage
+                .getByRole("textbox", { name: "Guest Limit Per Table" })
+                .fill("4");
+            await adminPage
+                .getByRole("textbox", { name: "Guest Capacity" })
+                .fill("3");
+            await adminPage
+                .getByRole("textbox", { name: "Slot Duration (Mins)" })
+                .fill("25");
             await adminPage
                 .getByRole("textbox", { name: "Break Time b/w Slots (Mins)" })
                 .fill("10");

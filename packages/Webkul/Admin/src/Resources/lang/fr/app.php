@@ -581,15 +581,20 @@ return [
                 'title' => 'Factures',
 
                 'datagrid' => [
-                    'action'       => 'Actions',
-                    'grand-total'  => 'Total général',
-                    'id'           => 'ID',
-                    'invoice-date' => 'Date de la facture',
-                    'order-id'     => 'ID de la commande',
-                    'overdue'      => 'En retard',
-                    'paid'         => 'Payé',
-                    'pending'      => 'En attente',
-                    'status'       => 'Statut',
+                    'action'              => 'Actions',
+                    'days-left'           => 'Il reste :count jour(s)',
+                    'days-overdue'        => ':count jour(s) de retard',
+                    'grand-total'         => 'Total général',
+                    'id'                  => 'ID',
+                    'invoice-date'        => 'Date de la facture',
+                    'mass-update-success' => 'Factures sélectionnées mises à jour avec succès.',
+                    'order-id'            => 'ID de la commande',
+                    'overdue'             => 'En retard',
+                    'overdue-by'          => 'En retard de :count jour(s)',
+                    'paid'                => 'Payé',
+                    'pending'             => 'En attente',
+                    'status'              => 'Statut',
+                    'update-status'       => 'Mettre à jour le statut',
                 ],
             ],
 
@@ -3729,6 +3734,40 @@ return [
                         'redirection-link'  => 'Lien de redirection',
                     ],
 
+                    'speculation-rules' => [
+                        'enable-speculation' => 'Activer les règles de spéculation',
+                        'info'               => 'Configurer les paramètres pour activer ou désactiver la logique de spéculation automatique.',
+                        'title'              => 'Règles de spéculation',
+
+                        'prerender' => [
+                            'conservative'           => 'Conservateur',
+                            'eager'                  => 'Avide',
+                            'eagerness'              => 'Niveau d’empressement du Prerender',
+                            'eagerness-info'         => 'Contrôle l’agressivité d’application des règles de spéculation. Options : avide (max), modéré (par défaut), conservateur (faible).',
+                            'enabled'                => 'Activer les règles de spéculation Prerender',
+                            'ignore-url-params'      => 'Ignorer les paramètres d’URL pour Prerender',
+                            'ignore-url-params-info' => 'Spécifiez les paramètres d’URL à ignorer dans les règles de spéculation. Utilisez le caractère pipe (|) pour en séparer plusieurs.',
+                            'ignore-urls'            => 'Ignorer les URLs de Prerender',
+                            'ignore-urls-info'       => 'Entrez les URLs à exclure de la logique de spéculation. Séparez-les avec un caractère pipe (|).',
+                            'info'                   => 'Définir le statut des règles de spéculation.',
+                            'moderate'               => 'Modéré',
+                        ],
+
+                        'prefetch' => [
+                            'conservative'           => 'Conservateur',
+                            'eager'                  => 'Avide',
+                            'eagerness'              => 'Niveau d’empressement du Prefetch',
+                            'eagerness-info'         => 'Contrôle l’agressivité d’application des règles de spéculation. Options : avide (max), modéré (par défaut), conservateur (faible).',
+                            'enabled'                => 'Activer les règles de spéculation Prefetch',
+                            'ignore-url-params'      => 'Ignorer les paramètres d’URL pour Prefetch',
+                            'ignore-url-params-info' => 'Spécifiez les paramètres d’URL à ignorer dans les règles de spéculation. Utilisez le caractère pipe (|) pour en séparer plusieurs.',
+                            'ignore-urls'            => 'Ignorer les URLs de Prefetch',
+                            'ignore-urls-info'       => 'Entrez les URLs à exclure de la logique de spéculation. Séparez-les avec un caractère pipe (|).',
+                            'info'                   => 'Définir le statut des règles de spéculation.',
+                            'moderate'               => 'Modéré',
+                        ],
+                    ],
+
                     'custom-scripts' => [
                         'custom-css'        => 'CSS personnalisé',
                         'custom-javascript' => 'Javascript personnalisé',
@@ -3746,6 +3785,15 @@ return [
                         'logo-image' => 'Image du logo',
                         'title'      => 'Logo de l\'administrateur',
                         'title-info' => 'Configurez les images du logo et du favicon pour la partie frontale de votre site web afin d\'améliorer votre image de marque et votre reconnaissance.',
+                    ],
+
+                    'menu-category' => [
+                        'default'         => 'Menu par défaut',
+                        'info'            => 'Ce paramètre contrôle la visibilité des catégories dans le menu d’en-tête. Vous pouvez choisir d’afficher uniquement les catégories parentes ou toutes les catégories imbriquées.',
+                        'preview-default' => 'Aperçu du menu par défaut',
+                        'preview-sidebar' => 'Aperçu du menu latéral',
+                        'sidebar'         => 'Menu latéral',
+                        'title'           => 'Vue de la catégorie du menu',
                     ],
                 ],
 
@@ -4163,13 +4211,103 @@ return [
                     ],
 
                     'social-login' => [
-                        'enable-facebook'   => 'Activer Facebook',
-                        'enable-github'     => 'Activer Github',
-                        'enable-google'     => 'Activer Google',
-                        'enable-linkedin'   => 'Activer LinkedIn',
-                        'enable-twitter'    => 'Activer Twitter',
-                        'social-login'      => 'Connexion sociale',
-                        'social-login-info' => '"La connexion sociale" permet aux utilisateurs d\'accéder aux sites Web en utilisant leurs comptes de médias sociaux, simplifiant ainsi les processus d\'inscription et de connexion pour plus de commodité.',
+                        'title' => 'Connexion sociale',
+                        'info'  => 'La "connexion sociale" permet aux utilisateurs d’accéder à un site Web à l’aide de leurs comptes de réseaux sociaux, simplifiant ainsi les processus d’inscription et de connexion.',
+
+                        'google' => [
+                            'enable-google' => 'Activer Google',
+
+                            'client-id' => [
+                                'title'      => 'Identifiant client',
+                                'title-info' => 'Identifiant unique fourni par Google lors de la création de votre application OAuth.',
+                            ],
+
+                            'client-secret' => [
+                                'title'      => 'Clé secrète du client',
+                                'title-info' => 'Clé secrète associée à votre client OAuth Google. Gardez-la confidentielle.',
+                            ],
+
+                            'redirect' => [
+                                'title'      => 'URL de redirection',
+                                'title-info' => 'URL de rappel vers laquelle les utilisateurs sont redirigés après l’authentification avec Google. Elle doit correspondre à l’URL configurée dans votre console Google.',
+                            ],
+                        ],
+
+                        'facebook' => [
+                            'enable-facebook' => 'Activer Facebook',
+
+                            'client-id' => [
+                                'title'      => 'Identifiant client',
+                                'title-info' => 'ID d’application fourni par Facebook lors de la création d’une application dans la console développeur Facebook.',
+                            ],
+
+                            'client-secret' => [
+                                'title'      => 'Clé secrète du client',
+                                'title-info' => 'Clé secrète associée à votre application Facebook. Gardez-la sécurisée et privée.',
+                            ],
+
+                            'redirect' => [
+                                'title'      => 'URL de redirection',
+                                'title-info' => 'URL de rappel vers laquelle les utilisateurs sont redirigés après l’authentification avec Facebook. Elle doit correspondre à l’URL configurée dans les paramètres de votre application Facebook.',
+                            ],
+                        ],
+
+                        'github' => [
+                            'enable-github' => 'Activer GitHub',
+
+                            'client-id' => [
+                                'title'      => 'Identifiant client',
+                                'title-info' => 'Identifiant unique fourni par GitHub lors de la création de votre application OAuth.',
+                            ],
+
+                            'client-secret' => [
+                                'title'      => 'Clé secrète du client',
+                                'title-info' => 'Clé secrète associée à votre client OAuth GitHub. Gardez-la confidentielle.',
+                            ],
+
+                            'redirect' => [
+                                'title'      => 'URL de redirection',
+                                'title-info' => 'URL de rappel vers laquelle les utilisateurs sont redirigés après l’authentification avec GitHub. Elle doit correspondre à l’URL configurée dans votre console GitHub.',
+                            ],
+                        ],
+
+                        'linkedin' => [
+                            'enable-linkedin' => 'Activer LinkedIn',
+
+                            'client-id' => [
+                                'title'      => 'Identifiant client',
+                                'title-info' => 'Identifiant unique fourni par LinkedIn lors de la création de votre application OAuth.',
+                            ],
+
+                            'client-secret' => [
+                                'title'      => 'Clé secrète du client',
+                                'title-info' => 'Clé secrète associée à votre client OAuth LinkedIn. Gardez-la confidentielle.',
+                            ],
+
+                            'redirect' => [
+                                'title'      => 'URL de redirection',
+                                'title-info' => 'URL de rappel vers laquelle les utilisateurs sont redirigés après l’authentification avec LinkedIn. Elle doit correspondre à l’URL configurée dans votre console LinkedIn.',
+                            ],
+                        ],
+
+                        'twitter' => [
+                            'enable-twitter' => 'Activer Twitter',
+
+                            'client-id' => [
+                                'title'      => 'Identifiant client',
+                                'title-info' => 'Identifiant unique fourni par Twitter lors de la création de votre application OAuth.',
+                            ],
+
+                            'client-secret' => [
+                                'title'      => 'Clé secrète du client',
+                                'title-info' => 'Clé secrète associée à votre client OAuth Twitter. Gardez-la confidentielle.',
+                            ],
+
+                            'redirect' => [
+                                'title'      => 'URL de redirection',
+                                'title-info' => 'URL de rappel vers laquelle les utilisateurs sont redirigés après l’authentification avec Twitter. Elle doit correspondre à l’URL configurée dans votre console Twitter.',
+                            ],
+                        ],
                     ],
                 ],
             ],

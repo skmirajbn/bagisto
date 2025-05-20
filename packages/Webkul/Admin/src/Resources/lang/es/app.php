@@ -581,15 +581,20 @@ return [
                 'title' => 'Facturas',
 
                 'datagrid' => [
-                    'action'       => 'Acciones',
-                    'grand-total'  => 'Total General',
-                    'id'           => 'ID',
-                    'invoice-date' => 'Fecha de la Factura',
-                    'order-id'     => 'ID de Pedido',
-                    'overdue'      => 'Vencido',
-                    'paid'         => 'Pagado',
-                    'pending'      => 'Pendiente',
-                    'status'       => 'Estado',
+                    'action'              => 'Acciones',
+                    'days-left'           => 'Quedan :count día(s)',
+                    'days-overdue'        => ':count día(s) de retraso',
+                    'grand-total'         => 'Total General',
+                    'id'                  => 'ID',
+                    'invoice-date'        => 'Fecha de la Factura',
+                    'mass-update-success' => 'Factura(s) seleccionada(s) actualizada(s) correctamente.',
+                    'order-id'            => 'ID de Pedido',
+                    'overdue'             => 'Vencido',
+                    'overdue-by'          => 'Atrasado por :count día(s)',
+                    'paid'                => 'Pagado',
+                    'pending'             => 'Pendiente',
+                    'status'              => 'Estado',
+                    'update-status'       => 'Actualizar estado',
                 ],
             ],
 
@@ -3729,6 +3734,40 @@ return [
                         'redirection-link'  => 'Enlace de Redirección',
                     ],
 
+                    'speculation-rules' => [
+                        'enable-speculation' => 'Habilitar reglas de especulación',
+                        'info'               => 'Configura los ajustes para habilitar o deshabilitar la lógica de especulación automática.',
+                        'title'              => 'Reglas de especulación',
+
+                        'prerender' => [
+                            'conservative'           => 'Conservador',
+                            'eager'                  => 'Ansioso',
+                            'eagerness'              => 'Nivel de anticipación del prerender',
+                            'eagerness-info'         => 'Controla cuán agresivamente se aplican las reglas de especulación. Opciones: ansioso (máximo), moderado (predeterminado), conservador (bajo).',
+                            'enabled'                => 'Habilitar reglas de especulación para prerender',
+                            'ignore-url-params'      => 'Ignorar parámetros de URL para prerender',
+                            'ignore-url-params-info' => 'Especifica los parámetros de URL a ignorar en las reglas de especulación. Usa una barra vertical (|) para separar múltiples parámetros.',
+                            'ignore-urls'            => 'Ignorar URLs para prerender',
+                            'ignore-urls-info'       => 'Introduce las URLs que deben excluirse de la lógica de especulación. Separa múltiples URLs con una barra vertical (|).',
+                            'info'                   => 'Configura el estado de las reglas de especulación.',
+                            'moderate'               => 'Moderado',
+                        ],
+
+                        'prefetch' => [
+                            'conservative'           => 'Conservador',
+                            'eager'                  => 'Ansioso',
+                            'eagerness'              => 'Nivel de anticipación del prefetch',
+                            'eagerness-info'         => 'Controla cuán agresivamente se aplican las reglas de especulación. Opciones: ansioso (máximo), moderado (predeterminado), conservador (bajo).',
+                            'enabled'                => 'Habilitar reglas de especulación para prefetch',
+                            'ignore-url-params'      => 'Ignorar parámetros de URL para prefetch',
+                            'ignore-url-params-info' => 'Especifica los parámetros de URL a ignorar en las reglas de especulación. Usa una barra vertical (|) para separar múltiples parámetros.',
+                            'ignore-urls'            => 'Ignorar URLs para prefetch',
+                            'ignore-urls-info'       => 'Introduce las URLs que deben excluirse de la lógica de especulación. Separa múltiples URLs con una barra vertical (|).',
+                            'info'                   => 'Configura el estado de las reglas de especulación.',
+                            'moderate'               => 'Moderado',
+                        ],
+                    ],
+
                     'custom-scripts' => [
                         'custom-css'        => 'CSS Personalizado',
                         'custom-javascript' => 'Javascript Personalizado',
@@ -3746,6 +3785,15 @@ return [
                         'logo-image' => 'Imagen de Logotipo',
                         'title'      => 'Logotipo de Administrador',
                         'title-info' => 'Configure imágenes de logotipo y favicon para la interfaz de su sitio web para una mejor marca y reconocimiento.',
+                    ],
+
+                    'menu-category' => [
+                        'default'         => 'Menú predeterminado',
+                        'info'            => 'Esta configuración controla la visibilidad de las categorías en el menú de encabezado. Puedes elegir mostrar solo las categorías principales o todas las categorías anidadas.',
+                        'preview-default' => 'Vista previa del menú predeterminado',
+                        'preview-sidebar' => 'Vista previa del menú lateral',
+                        'sidebar'         => 'Menú lateral',
+                        'title'           => 'Vista de categoría del menú',
                     ],
                 ],
 
@@ -4163,13 +4211,103 @@ return [
                     ],
 
                     'social-login' => [
-                        'enable-facebook'   => 'Habilitar Facebook',
-                        'enable-github'     => 'Habilitar Github',
-                        'enable-google'     => 'Habilitar Google',
-                        'enable-linkedin'   => 'Habilitar LinkedIn',
-                        'enable-twitter'    => 'Habilitar Twitter',
-                        'social-login'      => 'Inicio de sesión social',
-                        'social-login-info' => '"Inicio de sesión social" permite a los usuarios acceder a sitios web utilizando sus cuentas de redes sociales, simplificando los procesos de registro e inicio de sesión para mayor comodidad.',
+                        'title' => 'Inicio de sesión social',
+                        'info'  => '"El inicio de sesión social" permite a los usuarios acceder a un sitio web utilizando sus cuentas de redes sociales, simplificando los procesos de registro e inicio de sesión.',
+
+                        'google' => [
+                            'enable-google' => 'Habilitar Google',
+
+                            'client-id' => [
+                                'title'      => 'ID de cliente',
+                                'title-info' => 'Identificador único proporcionado por Google al crear tu aplicación OAuth.',
+                            ],
+
+                            'client-secret' => [
+                                'title'      => 'Secreto de cliente',
+                                'title-info' => 'Clave secreta asociada a tu cliente OAuth de Google. Mantenla confidencial.',
+                            ],
+
+                            'redirect' => [
+                                'title'      => 'Redirección',
+                                'title-info' => 'URL de retorno donde los usuarios son redirigidos después de autenticarse con Google. Debe coincidir con la URL configurada en tu consola de Google.',
+                            ],
+                        ],
+
+                        'facebook' => [
+                            'enable-facebook' => 'Habilitar Facebook',
+
+                            'client-id' => [
+                                'title'      => 'ID de cliente',
+                                'title-info' => 'ID de la aplicación proporcionado por Facebook al crear una aplicación en la consola de desarrolladores.',
+                            ],
+
+                            'client-secret' => [
+                                'title'      => 'Secreto de cliente',
+                                'title-info' => 'Secreto de la aplicación asociado a tu aplicación de Facebook. Mantenlo seguro y privado.',
+                            ],
+
+                            'redirect' => [
+                                'title'      => 'URL de redirección',
+                                'title-info' => 'URL de retorno donde los usuarios son redirigidos después de autenticarse con Facebook. Debe coincidir con la URL configurada en la configuración de tu aplicación de Facebook.',
+                            ],
+                        ],
+
+                        'github' => [
+                            'enable-github' => 'Habilitar GitHub',
+
+                            'client-id' => [
+                                'title'      => 'ID de cliente',
+                                'title-info' => 'Identificador único proporcionado por GitHub al crear tu aplicación OAuth.',
+                            ],
+
+                            'client-secret' => [
+                                'title'      => 'Secreto de cliente',
+                                'title-info' => 'Clave secreta asociada a tu cliente OAuth de GitHub. Mantenla confidencial.',
+                            ],
+
+                            'redirect' => [
+                                'title'      => 'URL de redirección',
+                                'title-info' => 'URL de retorno donde los usuarios son redirigidos después de autenticarse con GitHub. Debe coincidir con la URL configurada en tu consola de GitHub.',
+                            ],
+                        ],
+
+                        'linkedin' => [
+                            'enable-linkedin' => 'Habilitar LinkedIn',
+
+                            'client-id' => [
+                                'title'      => 'ID de cliente',
+                                'title-info' => 'Identificador único proporcionado por LinkedIn al crear tu aplicación OAuth.',
+                            ],
+
+                            'client-secret' => [
+                                'title'      => 'Secreto de cliente',
+                                'title-info' => 'Clave secreta asociada a tu cliente OAuth de LinkedIn. Mantenla confidencial.',
+                            ],
+
+                            'redirect' => [
+                                'title'      => 'URL de redirección',
+                                'title-info' => 'URL de retorno donde los usuarios son redirigidos después de autenticarse con LinkedIn. Debe coincidir con la URL configurada en tu consola de LinkedIn.',
+                            ],
+                        ],
+
+                        'twitter' => [
+                            'enable-twitter' => 'Habilitar Twitter',
+
+                            'client-id' => [
+                                'title'      => 'ID de cliente',
+                                'title-info' => 'Identificador único proporcionado por Twitter al crear tu aplicación OAuth.',
+                            ],
+
+                            'client-secret' => [
+                                'title'      => 'Secreto de cliente',
+                                'title-info' => 'Clave secreta asociada a tu cliente OAuth de Twitter. Mantenla confidencial.',
+                            ],
+
+                            'redirect' => [
+                                'title'      => 'URL de redirección',
+                                'title-info' => 'URL de retorno donde los usuarios son redirigidos después de autenticarse con Twitter. Debe coincidir con la URL configurada en tu consola de Twitter.',
+                            ],
+                        ],
                     ],
                 ],
             ],
