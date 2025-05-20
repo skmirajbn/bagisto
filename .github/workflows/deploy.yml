@@ -37,6 +37,7 @@ jobs:
           public/
           storage/
           app/Providers/AppServiceProvider.php
+          .env
           EOF
 
           # Sync application files to bagisto directory (excluding specific files)
