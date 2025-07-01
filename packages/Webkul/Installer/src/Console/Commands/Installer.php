@@ -27,7 +27,9 @@ class Installer extends Command
      */
     protected $signature = 'bagisto:install
         { --skip-env-check : Skip env check. }
-        { --skip-admin-creation : Skip admin creation. }';
+        { --skip-admin-creation : Skip admin creation. }
+        { --skip-github-star : Skip GitHub star prompt. }
+    ';
 
     /**
      * The console command description.
@@ -79,6 +81,7 @@ class Installer extends Command
         'fr'    => 'French',
         'he'    => 'Hebrew',
         'hi_IN' => 'Hindi',
+        'id'    => 'Indonesian',
         'it'    => 'Italian',
         'ja'    => 'Japanese',
         'nl'    => 'Dutch',
@@ -183,22 +186,20 @@ class Installer extends Command
             ? $this->askDetailsAndUpdateEnv()
             : $this->components->warn('Skipping environment check. This will assume that the `.env` file is already configured. If not, please create it manually.');
 
-        if (! $hasExistingEnv) {
-            $this->updateEnvVariables();
+        $this->updateEnvVariables();
 
-            $this->reconnectDatabase();
-
-            $this->loadEnvConfigs();
-        } else {
-            $this->updateEnvVariables();
-
-            $this->loadEnvConfigs();
-        }
+        $this->loadEnvConfigs();
 
         $this->warn('Step: Generating key...');
         $this->call('key:generate');
 
         $this->warn('Step: Migrating all tables...');
+
+        /**
+         * When using a table prefix, `migrate:fresh` may not function as expected.
+         * To ensure a clean state, we first wipe the database and then run `migrate:fresh` again.
+         */
+        $this->call('db:wipe');
         $this->call('migrate:fresh');
 
         $this->warn('Step: Seeding basic data for Bagisto kickstart...');
@@ -215,6 +216,10 @@ class Installer extends Command
 
         $this->warn('Step: Clearing cached bootstrap files...');
         $this->call('optimize:clear');
+
+        if (! $this->option('skip-github-star')) {
+            $this->askForGithubStar();
+        }
 
         ComposerEvents::postCreateProject();
     }
@@ -565,6 +570,8 @@ class Installer extends Command
          */
         $databaseConnection = $this->getEnvVariable('DB_CONNECTION');
 
+        DB::purge();
+
         config([
             "database.connections.{$databaseConnection}.host"     => $this->getEnvVariable('DB_HOST'),
             "database.connections.{$databaseConnection}.port"     => $this->getEnvVariable('DB_PORT'),
@@ -574,7 +581,17 @@ class Installer extends Command
             "database.connections.{$databaseConnection}.prefix"   => $this->getEnvVariable('DB_PREFIX'),
         ]);
 
-        DB::purge($databaseConnection);
+        DB::reconnect();
+
+        try {
+            DB::connection()->getPdo();
+
+            $this->components->info('Database connection established successfully.');
+        } catch (\Exception $e) {
+            $this->error('Database connection failed. Please check your credentials.');
+
+            abort(400);
+        }
 
         $this->components->info('Configuration loaded successfully.');
     }
@@ -592,43 +609,13 @@ class Installer extends Command
 
                 if (strlen($line) !== 0) {
                     if (strpos($key, $rowValues[0]) !== false) {
-                        return $rowValues[1];
+                        return trim($rowValues[1], '"');
                     }
                 }
             }
         }
 
         return $default;
-    }
-
-    /**
-     * Reconnect to the database with new credentials.
-     */
-    protected function reconnectDatabase(): void
-    {
-        $connection = $this->envDetails['DB_CONNECTION'] ?? 'mysql';
-
-        config([
-            "database.connections.{$connection}.host"     => $this->envDetails['DB_HOST'] ?? '',
-            "database.connections.{$connection}.port"     => $this->envDetails['DB_PORT'] ?? '',
-            "database.connections.{$connection}.database" => $this->envDetails['DB_DATABASE'] ?? '',
-            "database.connections.{$connection}.username" => $this->envDetails['DB_USERNAME'] ?? '',
-            "database.connections.{$connection}.password" => $this->envDetails['DB_PASSWORD'] ?? '',
-            "database.connections.{$connection}.prefix"   => $this->envDetails['DB_PREFIX'] ?? '',
-        ]);
-
-        DB::purge($connection);
-        DB::reconnect($connection);
-
-        try {
-            DB::connection()->getPdo();
-
-            $this->components->info('Database connection established successfully.');
-        } catch (\Exception $e) {
-            $this->error('Database connection failed. Please check your credentials.');
-
-            abort(400);
-        }
     }
 
     /**
@@ -664,5 +651,29 @@ class Installer extends Command
             'default_currency'   => $this->envDetails['APP_CURRENCY'] ?? $this->getEnvVariable('APP_CURRENCY', 'USD'),
             'allowed_currencies' => $this->envDetails['APP_ALLOWED_CURRENCIES'] ?? [$this->getEnvVariable('APP_CURRENCY', 'USD')],
         ];
+    }
+
+    /**
+     * Ask user to star the GitHub repository.
+     */
+    protected function askForGithubStar(): void
+    {
+        if (! $this->confirm('Would you like to star our repo on GitHub?')) {
+            return;
+        }
+
+        $repoUrl = 'https://github.com/bagisto/bagisto';
+
+        if (PHP_OS_FAMILY == 'Darwin') {
+            exec("open {$repoUrl}");
+        }
+
+        if (PHP_OS_FAMILY == 'Windows') {
+            exec("start {$repoUrl}");
+        }
+
+        if (PHP_OS_FAMILY == 'Linux') {
+            exec("xdg-open {$repoUrl}");
+        }
     }
 }
