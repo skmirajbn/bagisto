@@ -3371,6 +3371,7 @@ return [
             'cannot-change'      => 'Gebruiker kan niet worden gewijzigd.',
             'create-success'     => 'Gebruiker succesvol aangemaakt.',
             'delete-failed'      => 'Gebruiker kon niet worden verwijderd.',
+            'delete-self-error'  => 'U kunt uw eigen account niet verwijderen.',
             'delete-success'     => 'Gebruiker succesvol verwijderd.',
             'delete-warning'     => 'Weet u zeker dat u deze actie wilt uitvoeren?',
             'incorrect-password' => 'Onjuist wachtwoord',
@@ -3887,6 +3888,49 @@ return [
                     ],
                 ],
 
+                'gdpr' => [
+                    'title' => 'GDPR',
+                    'info'  => 'GDPR-nalevingsinstellingen',
+
+                    'settings' => [
+                        'title'   => 'GDPR-nalevingsinstellingen',
+                        'info'    => 'Beheer GDPR-nalevingsinstellingen, inclusief het privacybeleid. Schakel GDPR-functies in of uit indien nodig.',
+                        'enabled' => 'GDPR inschakelen',
+                    ],
+
+                    'agreement' => [
+                        'title'          => 'GDPR-toestemming',
+                        'info'           => 'Beheer klanttoestemming in overeenstemming met GDPR-regelgeving. Schakel verplichte toestemming in voor gegevensverzameling en -verwerking.',
+                        'enable'         => 'Klanttoestemming inschakelen',
+                        'checkbox-label' => 'Label van toestemmingsvakje',
+                        'content'        => 'Inhoud van toestemming',
+                    ],
+
+                    'cookie' => [
+                        'bottom-left'  => 'Linksonder',
+                        'bottom-right' => 'Rechtsonder',
+                        'center'       => 'Centrum',
+                        'description'  => 'Beschrijving',
+                        'enable'       => 'Cookie-melding inschakelen',
+                        'identifier'   => 'Statische blok-ID',
+                        'info'         => 'Stel cookie-toestemmingsinstellingen in om gebruikers te informeren over gegevensverzameling en naleving van het privacybeleid.',
+                        'position'     => 'Positie van cookieblok',
+                        'title'        => 'Cookie-meldingsinstellingen',
+                        'top-left'     => 'Linksboven',
+                        'top-right'    => 'Rechtsboven',
+                    ],
+
+                    'cookie-consent' => [
+                        'title'                  => 'Beheer cookie-instellingen',
+                        'info'                   => 'Selecteer de gewenste cookie-instellingen om het gebruik van gegevens te beheren. Stel toestemmingen in voor verschillende soorten cookies.',
+                        'strictly-necessary'     => 'Strikt noodzakelijk',
+                        'basic-interaction'      => 'Basisinteractie en functionaliteit',
+                        'experience-enhancement' => 'Ervaringsverbetering',
+                        'measurement'            => 'Meting',
+                        'targeting-advertising'  => 'Targeting en advertenties',
+                    ],
+                ],
+
                 'sitemap' => [
                     'info'  => 'Stel sitemapopties in.',
                     'title' => 'Sitemap',
@@ -3903,49 +3947,6 @@ return [
                         'max-url-per-file' => 'Maximaal aantal URL\'s per bestand',
                         'title'            => 'Bestandslimieten',
                     ],
-                ],
-            ],
-
-            'gdpr' => [
-                'title' => 'GDPR',
-                'info'  => 'GDPR-nalevingsinstellingen',
-
-                'settings' => [
-                    'title'   => 'GDPR-nalevingsinstellingen',
-                    'info'    => 'Beheer GDPR-nalevingsinstellingen, inclusief het privacybeleid. Schakel GDPR-functies in of uit indien nodig.',
-                    'enabled' => 'GDPR inschakelen',
-                ],
-
-                'agreement' => [
-                    'title'          => 'GDPR-toestemming',
-                    'info'           => 'Beheer klanttoestemming in overeenstemming met GDPR-regelgeving. Schakel verplichte toestemming in voor gegevensverzameling en -verwerking.',
-                    'enable'         => 'Klanttoestemming inschakelen',
-                    'checkbox-label' => 'Label van toestemmingsvakje',
-                    'content'        => 'Inhoud van toestemming',
-                ],
-
-                'cookie' => [
-                    'bottom-left'  => 'Linksonder',
-                    'bottom-right' => 'Rechtsonder',
-                    'center'       => 'Centrum',
-                    'description'  => 'Beschrijving',
-                    'enable'       => 'Cookie-melding inschakelen',
-                    'identifier'   => 'Statische blok-ID',
-                    'info'         => 'Stel cookie-toestemmingsinstellingen in om gebruikers te informeren over gegevensverzameling en naleving van het privacybeleid.',
-                    'position'     => 'Positie van cookieblok',
-                    'title'        => 'Cookie-meldingsinstellingen',
-                    'top-left'     => 'Linksboven',
-                    'top-right'    => 'Rechtsboven',
-                ],
-
-                'cookie-consent' => [
-                    'title'                  => 'Beheer cookie-instellingen',
-                    'info'                   => 'Selecteer de gewenste cookie-instellingen om het gebruik van gegevens te beheren. Stel toestemmingen in voor verschillende soorten cookies.',
-                    'strictly-necessary'     => 'Strikt noodzakelijk',
-                    'basic-interaction'      => 'Basisinteractie en functionaliteit',
-                    'experience-enhancement' => 'Ervaringsverbetering',
-                    'measurement'            => 'Meting',
-                    'targeting-advertising'  => 'Targeting en advertenties',
                 ],
             ],
 
